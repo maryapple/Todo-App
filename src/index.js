@@ -12,7 +12,7 @@ const App = () => {
         { label: 'Have a lunch', important: false, id: 3 }
     ]
     return (
-        <div>
+        <div className="container">
             <AppHeader />
             <SearchPanel />
             <TodoList todos={todoData}/>
