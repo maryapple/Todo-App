@@ -12,7 +12,7 @@ const SearchPanel = () => {
 
     return (
         <div id="search">
-            <input className="form-control col-sm-3" type="search" placeholder="Search" />
+            <input className="form-control search-input" type="text" placeholder="Search" />
         </div>
     )
 }
