@@ -62,40 +62,51 @@ export default class App extends Component {
 
     onToggleDone = (id) => {
         this.setState(({todoData}) => {
-            const idx = todoData.findIndex((el) => el.id === id)
-            // 1. Update obj
-            const oldItem = todoData[idx]
-            const newItem = {...oldItem, 
-                done: !oldItem.done
-            }
-            // 2. construct new array
-            const newArray = [
-                ...todoData.slice(0, idx),
-                newItem,
-                ...todoData.slice(idx + 1)
-            ]
-
             return {
-                todoData: newArray
+                todoData: this.toggleProperty(todoData, id, 'done')
             }
         })
     }
 
     onToggleImportant = (id) => {
-        
-        console.log('Toggle done', id)
+        this.setState(({ todoData }) => {
+            return {
+                todoData: this.toggleProperty(todoData, id, 'important')
+            }
+        })
+    }
+
+    toggleProperty(arr, id, propName) {
+        const idx = arr.findIndex((el) => el.id === id)
+        // 1. Update obj
+        const oldItem = arr[idx]
+        const newItem = {
+            ...oldItem,
+            [propName]: !oldItem.done
+        }
+        // 2. construct new array
+        return [
+            ...arr.slice(0, idx),
+            newItem,
+            ...arr.slice(idx + 1)
+        ]
     }
 
     render () {
+        const { todoData } = this.state
+        
+        const doneCount = todoData.filter((el) => el.done).length
+
+        const todoCount = todoData.length - doneCount
         return (
             <div className="todo-app">
-                <AppHeader toDo={1} done={3} />
+                <AppHeader toDo={todoCount} done={doneCount} />
                 <div className="top-panel d-flex search-group">
                     <SearchPanel />
                     <ItemStatusFilter />
                 </div>
                 <TodoList
-                    todos={this.state.todoData}
+                    todos={ todoData }
                     onDeleted={ this.deleteItem }
                     onToggleImportant={this.onToggleImportant}
                     onToggleDone={this.onToggleDone}
